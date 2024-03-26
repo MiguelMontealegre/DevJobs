@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!--Estilos de app-->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orelega+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+    <!--Estilos de stylelog -->
+    <link href="{{ asset('material') }}/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+    
+    <!--Estilos light-box-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--Estilos css (CDN) para "medium editor"-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/css/medium-editor.min.css" integrity="sha512-zYqhQjtcNMt8/h4RJallhYRev/et7+k/HDyry20li5fWSJYSExP9O07Ung28MUuXDneIFg0f2/U3HJZWsTNAiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--Script CDN para DROPZONE -->      
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/6.0.0-beta.2/dropzone.min.css" integrity="sha512-qkeymXyips4Xo5rbFhX+IDuWMDEmSn7Qo7KpPMmZ1BmuIA95IPVYsVZNn8n4NH/N30EY7PUZS3gTeTPoAGo1mA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+  
+
+<style>  
+  /* Agregar imagen como fondo */
+  body{
+  background-image: url('/material/img/categorias2.jpg');
+  background-size: cover;
+  background-position: top center;
+  }
+
+   
+  *,
+  ::before,
+  ::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+ }
+
+  ::before,
+  ::after {
+  --tw-content: '';
+ }
+ 
+</style>
+
+</head>
+
+
+<!--Nav en caso de login-->
+@auth()
+<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
+    <div class="container">
+      <div class="navbar-wrapper">
+        <a class="text-gray-700 navbar-brand" href="#">
+            <span class="font-bold text-3xl text-gray-700">Devjobs </span></a>
+
+            <a class="ml-0" href="#"><br>
+              <span class="text-white activo2 text-sm">By MiguelMontealegre </span></a>
+      </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="navbar-toggler-icon icon-bar"></span>
+        <span class="navbar-toggler-icon icon-bar"></span>
+        <span class="navbar-toggler-icon icon-bar"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+
+          <li class="nav-item">
+            <a href="{{route('vacantes.index')}}" class="nav-link">
+              <i class="material-icons">dashboard</i> Mis Vacantes
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a href="{{route('notificaciones')}}" class="nav-link">
+              <i class="material-icons">notifications_none</i> {{ Auth::user()->unreadNotifications->count() }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="material-icons">face</i> {{ Auth::user()->name }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('logout') }}"
+              onclick="event.preventDefault();
+              document.getElementById('logout-form').submit();">
+              <!--Icono-->
+              <span class="material-icons">
+                logout
+              </span>
+                  <!--texto-->
+                  Logout
+              </a>
+          </li>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+            </form>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+@endauth
+
+
+
+<!--________________________________________-->
+
+
+
+<body class="mt-20">
+
+  <div id="app">
+
+<div class="contenedor33 col-lg-6 col-sm-12 rounded inline-block float-left">
+
+  <p class="text-3xl font-bold text-gray-700 mt-8 ml-10">
+    Nueva <span class="font-bold text-purple-600">Vacante</span>
+  </p>
+
+
+<!--No olvidar agreagar el action,methos y csrf token-->
+<form action="{{route('vacantes.store')}}" 
+      method="post"
+      class="max-w-lg mx-auto my-10">
+@csrf
+
+
+
+
+<!--INPUT PARA EL TITULO ________________________________________________-->  
+<div class="col-10"> 
+    <div class="">
+         <label for="titulo" class="block mb-2 text-black">Titulo del empleo</label>
+         <input id="titulo" name="titulo" 
+         class="py-2.5 px-3 text-sm bg-white rounded form-input w-full border border-gray-200 @error('titulo') is-invalid @enderror" 
+         type="text"  
+         value="{{old('titulo')}}" 
+         autofocus placeholder="Ej. Analista en sistemas">
+    </div>
+</div>
+
+    @error('titulo')
+  <div class="col-7 ml-3 bg-red-100 border border-red-400 text-red-700 text-sm px-3 py-1 rounded relative mt-1 mb-4" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+@enderror
+
+
+
+
+<!--SELECT PARA CATEGORIA _____________________________________________________________________________________________-->    
+<div class="col-8">
+<div class="mt-4">
+    <label class="block mb-2 text-black" for="categoria">Selecciona una categoria</label>
+    <select name="categoria" id="categoria" class="py-2.5 px-3 text-sm block appearance-none w-full 
+    border border-gray-200 text-gray-400 rounded leading-tight 
+    focus:outline-none focus:bg-white focus:border-gray-500  bg-white @error('categoria') is-invalid @enderror">
+     <option value="" disabled selected>-Selecciona-</option> 
+       
+
+       @foreach($categorias as $categoria)   <!--La variable "categorias" es con la que se obtienen las categorias del seeder las cuales estan conectadas con la tabla de categorias (consultando el modelo de: "Categoria")-->
+         <option class=" text-purple-500"
+         {{old('categoria') == $categoria->id ? 'selected' : ''}}  
+         value="{{$categoria->id}}"> {{$categoria->nombre}} </option>
+       @endforeach
+    </select>  
+
+    
+</div>
+</div>
+
+@error('categoria')
+  <div class="col-7 ml-3 text-sm bg-red-100 border border-red-400 text-red-700 px-3 py-1 mt-1 rounded relative mb-6" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+@enderror
+
+
+
+
+<!--SELECT PARA EXPERIENCIA ______________________________________________________________________________-->    
+<div class="col-6">
+<div class="mt-4">
+    <label class="block mb-2 text-black" for="experiencia">Experiencia Requerida</label>
+    <select class="block appearance-none w-full 
+    border border-gray-200 text-gray-400 rounded leading-tight 
+    focus:outline-none focus:bg-white focus:border-gray-500 px-3 py-2.5 text-sm bg-white @error('experiencia') is-invalid @enderror" name="experiencia" id="experiencia">
+     
+    <option value="" disabled selected>-Selecciona-</option>   
+
+       @foreach($experiencias as $experiencia)   
+         <option class="text-purple-500"
+         {{old('experiencia') == $experiencia->id ? 'selected' : ''}}
+         value="{{$experiencia->id}}"> {{$experiencia->nombre}} </option>
+       @endforeach
+    </select>  
+</div>
+</div>
+
+@error('experiencia')
+  <div class="col-7 ml-3 text-sm mt-1 bg-red-100 border border-red-400 text-red-700 px-3 py-1 rounded relative mb-6" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+@enderror
+
+
+
+
+
+<!--SELECT PARA UBICACION ________________________________________________________________________________________-->    
+<div class="col-10">
+<div class="mt-4">
+    <label class="block mb-2 text-black" for="ubicacion">Selecciona la ubicacion</label>
+    <select class="px-3 py-2.5 text-sm block appearance-none w-full 
+    border border-gray-200 text-gray-400 rounded leading-tight 
+    focus:outline-none focus:bg-white focus:border-gray-500 bg-white @error('ubicacion') is-invalid @enderror" name="ubicacion" id="ubicacion">
+     
+    <option value="" disabled selected>-Selecciona-</option>   
+
+       @foreach($ubicacion as $ubi)   
+         <option class="text-purple-500"
+         {{old('ubicacion') == $ubi->id ? 'selected' : ''}}
+         value="{{$ubi->id}}"> {{$ubi->nombre}} </option>
+       @endforeach
+    </select>  
+</div>
+</div>
+
+@error('ubicacion')
+  <div class="col-7 ml-3 text-sm mt-1 bg-red-100 border border-red-400 text-red-700 px-3 py-1 rounded relative mb-6" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+@enderror
+
+
+
+
+
+<!--SELECT PARA SALARIOS ____________________________________________________________________________________________-->    
+<div class="col-7">
+<div class="mt-5">
+    <label class="block mb-2 text-black" for="salario">Selecciona el salario</label>
+    <select class="px-3 py-2.5 text-sm block appearance-none w-full 
+    border border-gray-200 text-gray-400 rounded leading-tight 
+    focus:outline-none focus:bg-white focus:border-gray-500 bg-white @error('salario') is-invalid @enderror" name="salario" id="salario">
+     
+    <option value="" disabled selected>-Selecciona-</option>   
+
+       @foreach($salarios as $salario)   
+         <option class="text-purple-500"
+         {{old('salario') == $salario->id ? 'selected' : ''}}
+         value="{{$salario->id}}"> {{$salario->nombre}} </option>
+       @endforeach
+    </select>  
+</div>
+</div>
+
+@error('salario')
+  <div class="col-7 ml-3 text-sm mt-1 bg-red-100 border border-red-400 text-red-700 px-3 py-1 rounded relative mb-6" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+@enderror
+
+
+
+
+
+
+<!-- DESCRIPCION con la herramienta "MediumEditor"__________________________________________________________________-->
+<div class="mt-5">
+    <label class="block mb-2 text-black" for="descripcion"><p class="text-xl font-bold text-gray-700">
+      Descripcion e <span class="font-bold text-purple-600">Info</span>
+  </p></label>
+    <div class="medium-editor p-3 bg-white text-gray-700 rounded border border-gray-200 form-input w-full"></div>  <!--La herramienta MEDIUMEDITOR Funciona mediante un *div* por lo cual se haria con esta sintaxis masomenos -->
+    <input id="descripcion" type="hidden" name="descripcion" value="{{old('descripcion')}}">
+
+    
+    @error('descripcion')
+  <div class="col-7 ml-3 text-sm mt-1 bg-red-100 border border-red-400 text-red-700 px-3 py-1 rounded relative mb-6" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+  @enderror
+</div>    
+
+
+
+<!--Puestos-->
+<div class="col-5">
+  <div class="mt-5">
+    <label class="block mb-2 text-black" for="descripcion"><p class="text-xl font-bold text-gray-700">
+      Numero De <span class="font-bold text-purple-600">Puestos Disponibles</span>
+  </p></label>
+      <input class="px-3 py-2.5 text-sm block appearance-none w-full 
+      border border-gray-200 text-gray-400 rounded leading-tight 
+      focus:outline-none focus:bg-white focus:border-gray-500 bg-white @error('puestos') is-invalid @enderror" type="number" name="puestos" id="puestos" value="{{old('puestos')}}">
+  </div>
+  </div>
+  @error('puestos')
+  <div class="col-7 ml-3 text-sm mt-1 bg-red-100 border border-red-400 text-red-700 px-3 py-1 rounded relative mb-6" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+  @enderror
+
+
+
+
+
+
+<!-- DROPZONE Para introducir imagenes mediante "DropZone.js" ________________________________-->
+<div class="mt-5">
+  <label class="block text-gray-700 mb-3" for="imagen">Imagen Vacante: </label>
+
+  <div id="dropzoneDevJobs" class="dropzone bg-white text-gray-700 rounded"></div>
+  <input type="hidden" name="imagen" id="imagen" value="{{ old('imagen') }}" >
+
+@error('imagen')
+  <div class="col-7 ml-3 text-sm mt-1 bg-red-100 border border-red-400 text-red-700 px-3 py-1 rounded relative mb-6" role="alert">
+     <strong class="font-bold">Error!</strong>
+     <span class="block"> {{$message}}</span>
+  </div>
+@enderror
+<p id="error"></p>
+</div> 
+
+
+
+
+
+
+<!-- PANEL PARA SELECCIONAR HABILIDADES __________________________________________________________________________ -->
+<div class="mt-8">
+    <label 
+        for="" 
+        class="block text-gray-700 mb-1"
+    ><p class="text-xl font-bold text-gray-700">
+      Habilidades y <span class="font-bold text-purple-600">Conocimientos</span>
+  </p><span class="text-xs">(Elige al menos 3)</span> </label>
+
+    @php
+       $skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails']
+    @endphp
+
+    
+<!--Para pasar un arreglo a vue.js utilizamos la herramienta "json_encode()" , como podemos ver estamos pasando el arreglo que necesitamos por medio de la variable "$skills"  -->
+<!--En el props de esta etiqueta se le ponen 2 puntos cunado es un arreglo u objeto con mas dinamismo, pero en caso contrario , por ejemplo cuando estamos trabajando con un string (moment.js) como fechas u cosas asi , se le quitan esos puntos a el props -->
+    <lista-skills
+        :skills="{{ json_encode($skills) }}"    
+        :oldskills="{{ json_encode( old('skills') ) }}"
+    ></lista-skills>
+  
+
+    @error('skills')
+    <div class="col-7 ml-3 text-sm mt-1 bg-red-100 border border-red-400 text-red-700 px-3 py-1 rounded relative mb-6" role="alert">
+       <strong class="font-bold">Error!</strong>
+       <span class="block"> {{$message}}</span>
+    </div>
+  @enderror
+
+</div>
+
+    
+    
+
+
+
+<!-- Boton para enviar los campos ____________________________________________________________________________-->
+    <button type="submit" class="mx-auto btneon btneon--2 font-bold mt-5"> Publicar Vacante   
+    </button>
+
+</form>
+
+</div>
+
+<div class="contenedor44 rounded inline-block float-left">
+
+  <div class="fixed bg-white rounded">
+    <img class="rounded" width="500" height="500" src="{{asset('material/img/create.jpg')}}" alt="">
+
+    <p class="text-2xl font-bold text-gray-700 mt-2 ml-10">
+       No <span class="font-bold text-purple-600">Olvides</span>
+  </p>
+  <p class="text-sm font-bold text-gray-700 ml-10 mt-0">
+    Especificar bien los datos, esto te facilitara las postulaciones.
+  </p> 
+  </div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--Scripts para Hrramientas externas-->
+
+     <!--Script para medium editor-->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/js/medium-editor.min.js" integrity="sha512-5D/0tAVbq1D3ZAzbxOnvpLt7Jl/n8m/YGASscHTNYsBvTcJnrYNiDIJm6We0RPJCpFJWowOPNz9ZJx7Ei+yFiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+     
+     <!-- Script cdn para DROPZONE-->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/6.0.0-beta.2/dropzone-min.js" integrity="sha512-FFyHlfr2vLvm0wwfHTNluDFFhHaorucvwbpr0sZYmxciUj3NoW1lYpveAQcx2B+MnbXbSrRasqp43ldP9BKJcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+     <!-- Configuracion adicional en script para Medium-Editor  -->
+     <script> 
+
+     Dropzone.autoDiscover = false; //Esto lo tenemos que agregar para evitar un error con dropzone
+
+         document.addEventListener('DOMContentLoaded', () => {
+    
+
+      //Medium Editor _______________________________________________________________________________________________________
+         const editor = new MediumEditor('.medium-editor', {
+                toolbar : {
+                    buttons: ['bold', 'italic', 'underline', 'quote', 'anchor', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull',  'orderedlist', 'unorderedlist', 'h2', 'h3'],
+                    static: true,
+                    sticky: true
+                },
+                placeholder: {
+                    text: 'Información de la vacante'
+                }
+            });
+
+            // Agrega al input hidden lo que el usuario escribe en medium editor
+            editor.subscribe('editableInput', function(eventObj, editable) {
+                const contenido = editor.getContent();
+                document.querySelector('#descripcion').value = contenido;
+            })
+
+            // Llena el editor con el contenido del input hidden
+            editor.setContent( document.querySelector('#descripcion').value ); 
+
+
+
+            // Dropzone ____________________________________________________________________________________
+            const dropzoneDevJobs = new Dropzone('#dropzoneDevJobs', {
+                url: "/vacantes/imagen",
+                dictDefaultMessage: 'Sube aquí tu archivo',   //Texto a mostrar
+                acceptedFiles: ".png,.jpg,.jpeg,.gif,.bmp",  //Aqui podemos definir que archivos acepte el dropzone
+                addRemoveLinks: true,
+                dictRemoveFile: 'Borrar Archivo',
+                maxFiles: 1,
+                headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                },
+                //iNIT para cuadrar lo de el value('old')
+                init: function() {
+                    if(document.querySelector('#imagen').value.trim() ) {
+                       let imagenPublicada = {};
+                       imagenPublicada.size = 1234;
+                       imagenPublicada.name = document.querySelector('#imagen').value;
+                       
+                       this.options.addedfile.call(this, imagenPublicada);
+                       this.options.thumbnail.call(this, imagenPublicada, `/storage/vacantes/${imagenPublicada.name}`);
+
+                       imagenPublicada.previewElement.classList.add('dz-sucess');
+                       imagenPublicada.previewElement.classList.add('dz-complete');
+                    } 
+                },
+                success: function(file, response) {
+                    // console.log(file);
+                    // console.log(response);
+                    console.log(response.correcto);
+                    document.querySelector('#error').textContent = '';
+
+                    // Coloca la respuesta del servidor en el input hidden
+                    document.querySelector('#imagen').value = response.correcto;
+
+                    // Añadir al objeto de archivo el nombre del servidor
+                    file.nombreServidor = response.correcto;
+                },
+                maxfilesexceeded: function(file) {
+                    if( this.files[1] != null ) {     //En caso de subir mas de 1 archivo
+                        this.removeFile(this.files[0]); // eliminar el archivo anterior
+                        this.addFile(file); // Agregar el nuevo archivo 
+                    }
+                }, 
+                removedfile: function(file, response) {
+                    file.previewElement.parentNode.removeChild(file.previewElement);
+
+                    params = {
+                        imagen: file.nombreServidor ?? document.querySelector('#imagen').value
+                    }           //ruta definida en ruta
+                    axios.post('/vacantes/borrarimagen', params )
+                        .then(respuesta => console.log(respuesta))
+                }
+            });   
+      })
+
+     </script> 
+
+</body>
+</html>
